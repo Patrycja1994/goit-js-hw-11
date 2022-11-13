@@ -1,38 +1,36 @@
-
-import { Notify } from "notiflix";
-import { fetchImages, lastPage } from "./js/fetch";
-import { resultImages } from "./js/render";
+import { Notify } from 'notiflix';
+// import functions and variables
+import { fetchImages, lastPage } from './js/fetch';
+import { renderImages } from './js/render';
 
 const gallery = document.querySelector('.gallery');
-const inputBtn = document.querySelector('#search-form input');
-const searchBtn = document.querySelector('button[type=submit]');
+const inputTag = document.querySelector('#search-form input');
+const searchBtn = document.querySelector('#search-button');
 const loadMoreButton = document.querySelector('.load-more');
 
-let page = 1;
+export let page = 1;
+
 
 const search = () => {
   event.preventDefault();
-  loadMoreButton.style.display = "none";
+  loadMoreButton.style.display = 'none';
 
-  const name = inputBtn.value.trim();
+  const name = inputTag.value.trim();
 
-  fetchImages (name, page) 
-  .then(images => {
-    resultImages(images.hits);
-    
-    if (page < lastPage) {
-      loadMoreButton.style.display = "block";
-    }
-  })
-  .catch(error => console.log(error));
-
+  fetchImages(name, page)
+    .then(images => {
+      renderImages(images.hits);
+      if (page < lastPage) {
+        loadMoreButton.style.display = 'block';
+      }
+    })
+    .catch(error => console.log(error));
 };
 
-searchBtn.addEventListener("click", () => {
+searchBtn.addEventListener('click', () => {
   event.preventDefault();
 
-    
-  if (inputBtn.value.trim().length >= 1) {
+  if (inputTag.value.trim().length >= 1) {
     gallery.innerHTML = '';
     search();
   } else {
@@ -40,7 +38,7 @@ searchBtn.addEventListener("click", () => {
   }
 });
 
-loadMoreButton.addEventListener('click', () => {
+loadMoreBtn.addEventListener('click', () => {
   page = page + 1;
   search();
 });
