@@ -1,12 +1,11 @@
 import axios from "axios";
-import { page } from "..index"; 
 import { Notify } from "notiflix";
 
-const URL_API_IMAGES = 'https://pixabay.com/api/';
+export let lastPage = 1;
 
 export async function fetchImages (inputName, page) {
     try {
-            const response = await axios.get(URL_API_IMAGES, {
+        const response = await axios.get(`https://pixabay.com/api/`, {
                 method: 'get',
                 params: {
                     key: '31081943-fde7852d3c642a63447541410',
@@ -23,10 +22,15 @@ export async function fetchImages (inputName, page) {
                 return Notify.failure ('Sorry, there are no images matching your search query. Please try again.')
             }
 
-            if (response.data.totalHits > 0 ) {
+            if (response.data.totalHits > 0 && page === 1) {
                 return Notify.success (`Hooray! We found ${response.data.totalHits} images.`);
             }
-
+            
+            if (response.data.totalHits % 40 === 0) {
+                lastPage = response.data.totalHits / 40;
+            } else {
+                lastPage = Math.floor(response.data.totalHits / 40) + 1;
+            }
             return response.data;
     }
     catch (error) {
