@@ -38,7 +38,7 @@ searchBtn.addEventListener('click', () => {
   }
 });
 
-loadMoreBtn.addEventListener('click', () => {
+loadMoreButton.addEventListener('click', () => {
   page = page + 1;
   search();
 });

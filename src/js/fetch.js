@@ -1,13 +1,14 @@
 import { Notify } from 'notiflix';
 
-const axios = require('axios').default;
+import axios from 'axios';
 
 export let lastPage = 1;
 
+const IMAGES_API_URL = 'https://pixabay.com/api/';
 
 export async function fetchImages(name, page) {
   try {
-    const response = await axios.get(`https://pixabay.com/api/`, {
+    const response = await axios.get(IMAGES_API_URL, {
       method: 'get',
       params: {
         key: '31081943-fde7852d3c642a63447541410',
@@ -21,10 +22,9 @@ export async function fetchImages(name, page) {
     });
 
     if (response.data.totalHits === 0) {
-      Notify.failure(
+      return Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
-      return;
     }
 
     if (response.data.totalHits > 0 && page === 1)
@@ -33,9 +33,9 @@ export async function fetchImages(name, page) {
       );
 
     if (response.data.totalHits % 40 === 0) {
-      lastIndexPage = response.data.totalHits / 40;
+      lastPage = response.data.totalHits / 40;
     } else {
-      lastIndexPage = Math.floor(response.data.totalHits / 40) + 1;
+      lastPage = Math.floor(response.data.totalHits / 40) + 1;
     }
 
     return response.data;

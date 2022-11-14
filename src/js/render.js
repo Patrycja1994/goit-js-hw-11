@@ -6,12 +6,12 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const gallery = document.querySelector('.gallery');
 
 export function renderImages(images) {
-  const markup = images
+  const result = images
     .map(image => {
       return `<a class="gallery__link" href="${image.largeImageURL}">
-                <div class="gallery-item">
-                    <img class="gallery-item__img" src="${image.webformatURL}" alt="${image.tags}" loading="lazy"/>
-                  <div class="info">
+      <div class="gallery-item">
+          <img class="gallery-item__img" src="${image.webformatURL}" alt="${image.tags}" loading="lazy"/>
+        <div class="info">
                     <p class="info-item">
                       <b>Likes: ${image.likes}</b><br>
                     </p>
@@ -29,7 +29,7 @@ export function renderImages(images) {
               </a>`;
     })
     .join('');
-  gallery.insertAdjacentHTML('beforeend', markup);
+  gallery.insertAdjacentHTML('beforeend', result);
 
   var lightbox = new SimpleLightbox('.gallery a').refresh();
 }
